@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
         shell: bash
 
       - name: Serverga deploy qilish
@@ -38,6 +38,6 @@ jobs:
             fi
             npm install
             npm run build
-            pm2 restart ci_cd_app || pm2 start dist/main.js --name ci_cd_app
+            pm2 restart ci_cd_app_elbek || pm2 start dist/main.js --name ci_cd_app_elbek
           "
         shell: bash
