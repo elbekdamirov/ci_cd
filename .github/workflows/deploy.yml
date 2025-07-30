@@ -27,6 +27,20 @@ jobs:
         run: |
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
           ssh $USER@$HOST "
+            # Node va npm o'rnatilganligini tekshirish
+            if ! command -v node >/dev/null 2>&1; then
+              echo 'Node.js o‘rnatilyapti...'
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            fi
+
+            # pm2 o'rnatilganligini tekshirish
+            if ! command -v pm2 >/dev/null 2>&1; then
+              echo 'PM2 o‘rnatilyapti...'
+              sudo npm install -g pm2
+            fi
+
+            # Loyihani yuklash yoki yangilash
             if [ ! -d $APP_DIR ]; then
               mkdir -p $APP_DIR
               git clone https://github.com/elbekdamirov/ci_cd.git $APP_DIR
@@ -36,8 +50,11 @@ jobs:
               cd $APP_DIR
               git pull origin main
             fi
+
             npm install
             npm run build
+
+            # pm2 restart yoki start
             pm2 restart ci_cd_app_elbek || pm2 start dist/main.js --name ci_cd_app_elbek
           "
         shell: bash
