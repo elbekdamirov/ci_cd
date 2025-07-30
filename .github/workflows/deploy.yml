@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
         shell: bash
 
       - name: Serverga deploy qilish
@@ -30,7 +30,7 @@ jobs:
             if [ ! -d $APP_DIR ]; then
               mkdir -p $APP_DIR
               git clone https://github.com/elbekdamirov/ci_cd.git $APP_DIR
-              cd $APP_DIR
+              cd $APP_DIR   
               echo 'PORT=${PORT}' > .env
             else
               cd $APP_DIR
